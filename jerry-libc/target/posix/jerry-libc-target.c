@@ -211,20 +211,25 @@ fread (void *ptr, /**< address of buffer to read to */
 
   if (size == 0)
   {
+    fprintf(stdout, "size is zero\n");
     return 0;
   }
 
   do
   {
+    fprintf(stdout, "before syscall_3 is call\n");
     ret = syscall_3 (SYSCALL_NO (read),
                      (long int) stream,
                      (long int) ((uint8_t *) ptr + bytes_read),
                      (long int) (size * nmemb - bytes_read));
-
+    fprintf(stdout, "arg : %ld, arg2: %ld, arg3: %ld\n", stream, ((uint8_t *) ptr + bytes_read), (size * nmemb - bytes_read));
+    fprintf(stdout, "after syscall_3 is call ret : %ld\n", ret);
     bytes_read += (size_t) ret;
+    fprintf(stdout, "total : %ld\n", bytes_read);
   }
   while (bytes_read != size * nmemb && ret != 0);
 
+  fprintf(stdout, "returned\n");
   return bytes_read / size;
 } /* fread */
 
